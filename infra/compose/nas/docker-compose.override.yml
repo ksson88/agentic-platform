@@ -1,0 +1,13 @@
+services:
+  postgres:
+    volumes:
+      - /volume1/docker/app/db-data:/var/lib/postgresql/data
+      - /volume1/docker/app/db-logs:/var/log/postgresql
+
+  web:
+    volumes:
+      - /volume1/docker/app/web-logs:/var/log/web
+
+  batch:
+    volumes:
+      - /volume1/docker/app/batch-logs:/var/log/batch
