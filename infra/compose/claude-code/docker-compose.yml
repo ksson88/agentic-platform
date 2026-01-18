@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  claude-code:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: claude-code
+    hostname: claude-code
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - TZ=${TZ:-Asia/Seoul}
+    volumes:
+      # Claude Code 설정
+      - ${CLAUDE_CONFIG_PATH:-./config}:/root/.claude
+      # Git 설정
+      - ${GIT_CONFIG_PATH:-./gitconfig}:/root/.gitconfig:ro
+      # SSH 키 (GitHub 등 연동용)
+      - ${SSH_PATH:-./ssh}:/root/.ssh:ro
+      # 작업 디렉토리
+      - ${WORKSPACE_PATH:-/volume1/projects}:/workspace
+    working_dir: /workspace
+    networks:
+      - claude-network
+
+networks:
+  claude-network:
+    driver: bridge
